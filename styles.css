@@ -49,7 +49,6 @@ section[data-testid="test-todo-card"] {
   background: var(--card);
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   width: 100%;
   max-width: 460px;
   padding: 28px;
@@ -187,7 +186,6 @@ p[data-testid="test-todo-description"] {
   color: var(--green);
 }
 
-/* ── DATE SECTION ── */
 .date-section {
   background: var(--bg);
   border: 1px solid var(--border);
