@@ -9,133 +9,286 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <section
+    <article
       data-testid="test-todo-card"
+      id="todo-card"
       role="region"
       aria-label="Todo task card"
     >
-      <div class="top-row">
-        <div class="checkbox-wrap">
-          <label>
-            <input
-              type="checkbox"
-              data-testid="test-todo-complete-toggle"
-              aria-label="Mark task as complete"
-              onchange="toggleComplete(this)"
-            />
-          </label>
+      <!-- Priority indicator bar -->
+      <div
+        data-testid="test-todo-priority-indicator"
+        id="priority-indicator"
+        class="high"
+        aria-hidden="true"
+      ></div>
+
+      <!-- ── VIEW MODE ── -->
+      <div class="card-inner" id="card-view">
+        <!-- Top row -->
+        <div class="top-row">
+          <div class="checkbox-wrap">
+            <label for="complete-toggle" aria-label="Mark task complete">
+              <input
+                type="checkbox"
+                id="complete-toggle"
+                data-testid="test-todo-complete-toggle"
+                onchange="onCheckboxChange(this)"
+              />
+            </label>
+          </div>
+          <div class="title-area">
+            <h2 data-testid="test-todo-title" id="todo-title">
+              Redesign the Kookietng order page
+            </h2>
+          </div>
         </div>
-        <div class="title-area">
-          <h2 data-testid="test-todo-title">
-            Redesign the Kookietng order page
-          </h2>
-          <p data-testid="test-todo-description">
+
+        <!-- Badges -->
+        <div class="badges-row">
+          <span
+            class="badge high"
+            data-testid="test-todo-priority"
+            id="priority-badge"
+            aria-label="Priority: High"
+            >🔴 High</span
+          >
+          <span
+            class="badge pending"
+            data-testid="test-todo-status"
+            id="status-badge"
+            aria-label="Status: Pending"
+            >⏳ Pending</span
+          >
+          <span
+            data-testid="test-todo-overdue-indicator"
+            id="overdue-indicator"
+            role="status"
+            aria-label="This task is overdue"
+            >⚠ Overdue</span
+          >
+        </div>
+
+        <!-- Status control -->
+        <div class="status-row">
+          <span class="status-label" id="status-label">Status:</span>
+          <select
+            data-testid="test-todo-status-control"
+            id="status-control"
+            aria-label="Change task status"
+            onchange="onStatusChange(this.value)"
+          >
+            <option value="Pending">⏳ Pending</option>
+            <option value="In Progress">🔄 In Progress</option>
+            <option value="Done">✅ Done</option>
+          </select>
+        </div>
+
+        <!-- Due date + time remaining -->
+        <div class="date-section">
+          <div class="date-left">
+            <svg
+              class="date-icon"
+              width="14"
+              height="14"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+              aria-hidden="true"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+            </svg>
+            <time
+              data-testid="test-todo-due-date"
+              id="due-date-display"
+              datetime="2026-05-01T23:59:00"
+              >Due May 1, 2026</time
+            >
+          </div>
+          <span
+            data-testid="test-todo-time-remaining"
+            id="time-remaining"
+            aria-live="polite"
+            aria-label="Time remaining"
+            class="safe"
+            >Calculating…</span
+          >
+        </div>
+
+        <!-- Collapsible description -->
+        <div class="expand-row">
+          <span class="desc-heading">Description</span>
+          <button
+            data-testid="test-todo-expand-toggle"
+            id="expand-toggle"
+            aria-expanded="false"
+            aria-controls="collapsible-section"
+            onclick="toggleExpand()"
+          >
+            <span id="expand-label">Show more</span>
+            <svg
+              class="expand-icon"
+              id="expand-icon"
+              width="12"
+              height="12"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </button>
+        </div>
+
+        <div
+          data-testid="test-todo-collapsible-section"
+          id="collapsible-section"
+        >
+          <p data-testid="test-todo-description" id="todo-description">
             Update the product cards layout, add a quantity selector, and
-            improve mobile responsiveness before the April promo launch.
+            improve mobile responsiveness before the April promo launch. This
+            includes refactoring the grid system, updating the colour tokens to
+            match the new brand guidelines, and making sure all interactive
+            elements meet WCAG AA contrast ratios. Coordinate with the backend
+            team for the new cart API endpoint changes.
           </p>
         </div>
-      </div>
 
-      <div class="badges-row" role="group" aria-label="Task metadata">
-        <span
-          class="badge high"
-          data-testid="test-todo-priority"
-          aria-label="Priority: High"
-          >High</span
-        >
+        <!-- Tags -->
+        <ul data-testid="test-todo-tags" role="list" aria-label="Tags">
+          <li data-testid="test-todo-tag-work" role="listitem"># work</li>
+          <li data-testid="test-todo-tag-urgent" role="listitem"># urgent</li>
+          <li role="listitem"># design</li>
+        </ul>
 
-        <span
-          class="badge pending"
-          data-testid="test-todo-status"
-          id="status-badge"
-          aria-label="Status: Pending"
-          >Pending</span
-        >
-      </div>
-
-      <div class="date-section">
-        <div class="date-label">
-          <svg
-            width="14"
-            height="14"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2"
-            aria-hidden="true"
+        <!-- Actions -->
+        <div class="actions-row">
+          <button
+            class="btn"
+            data-testid="test-todo-edit-button"
+            id="edit-btn"
+            aria-label="Edit task"
+            onclick="openEditMode()"
           >
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <line x1="16" y1="2" x2="16" y2="6" />
-            <line x1="8" y1="2" x2="8" y2="6" />
-            <line x1="3" y1="10" x2="21" y2="10" />
-          </svg>
-          Deadline
+            <svg
+              width="13"
+              height="13"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <path
+                d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+              />
+              <path
+                d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"
+              />
+            </svg>
+            Edit
+          </button>
+          <button
+            class="btn"
+            data-testid="test-todo-delete-button"
+            aria-label="Delete task"
+            onclick="alert('Delete clicked')"
+          >
+            <svg
+              width="13"
+              height="13"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <polyline points="3 6 5 6 21 6" />
+              <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
+              <path
+                d="M10 11v6M14 11v6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"
+              />
+            </svg>
+            Delete
+          </button>
         </div>
-        <time data-testid="test-todo-due-date" datetime="2026-04-16T23:59:00">
-          Due Apr 16, 2026
-        </time>
-        <span
-          data-testid="test-todo-time-remaining"
-          id="time-remaining"
-          aria-live="polite"
-          aria-label="Time remaining"
-          >Calculating...</span
-        >
       </div>
 
-      <ul data-testid="test-todo-tags" role="list" aria-label="Tags">
-        <li data-testid="test-todo-tag-work" role="listitem"># work</li>
-        <li data-testid="test-todo-tag-urgent" role="listitem"># urgent</li>
-        <li role="listitem"># design</li>
-      </ul>
+      <!-- ── EDIT FORM ── -->
+      <form
+        data-testid="test-todo-edit-form"
+        id="edit-form"
+        aria-label="Edit task form"
+        onsubmit="saveEdit(event)"
+      >
+        <div class="form-row">
+          <label class="form-label" for="edit-title">Title</label>
+          <input
+            type="text"
+            id="edit-title"
+            data-testid="test-todo-edit-title-input"
+            class="form-input"
+            required
+            aria-required="true"
+          />
+        </div>
 
-      <div class="actions-row">
-        <button
-          class="btn"
-          data-testid="test-todo-edit-button"
-          aria-label="Edit task"
-          onclick="console.log('edit clicked')"
-        >
-          <svg
-            width="13"
-            height="13"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2.5"
-            aria-hidden="true"
-          >
-            <path
-              d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"
+        <div class="form-row">
+          <label class="form-label" for="edit-description">Description</label>
+          <textarea
+            id="edit-description"
+            data-testid="test-todo-edit-description-input"
+            class="form-input"
+          ></textarea>
+        </div>
+
+        <div class="form-row-2">
+          <div class="form-row">
+            <label class="form-label" for="edit-priority">Priority</label>
+            <select
+              id="edit-priority"
+              data-testid="test-todo-edit-priority-select"
+              class="form-input"
+              aria-label="Select priority"
+            >
+              <option value="Low">🟢 Low</option>
+              <option value="Medium">🟡 Medium</option>
+              <option value="High" selected>🔴 High</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label class="form-label" for="edit-due-date">Due Date</label>
+            <input
+              type="datetime-local"
+              id="edit-due-date"
+              data-testid="test-todo-edit-due-date-input"
+              class="form-input"
             />
-            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-          </svg>
-          Edit
-        </button>
-        <button
-          class="btn"
-          data-testid="test-todo-delete-button"
-          aria-label="Delete task"
-          onclick="alert('Delete clicked')"
-        >
-          <svg
-            width="13"
-            height="13"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            stroke-width="2.5"
-            aria-hidden="true"
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button
+            type="button"
+            class="btn"
+            data-testid="test-todo-cancel-button"
+            onclick="cancelEdit()"
           >
-            <polyline points="3 6 5 6 21 6" />
-            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6" />
-            <path d="M10 11v6M14 11v6" />
-            <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2" />
-          </svg>
-          Delete
-        </button>
-      </div>
-    </section>
+            Cancel
+          </button>
+          <button type="submit" class="btn" data-testid="test-todo-save-button">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </article>
+
     <script src="./script.js"></script>
   </body>
 </html>
